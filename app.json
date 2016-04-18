@@ -1,7 +1,7 @@
 {
-  "name": "YelpProxy",
-  "description": "Yelp Proxy",
-  "repository": "https://github.com/gabepages/yelp-proxy",
+  "name": "TwilioProxy",
+  "description": "Twilio Proxy",
+  "repository": "https://github.com/Absolutestunna/yelp-proxy",
   "logo": "http://node-js-sample.herokuapp.com/node.svg",
   "keywords": ["node", "express", "static"],
   "image": "heroku/nodejs"

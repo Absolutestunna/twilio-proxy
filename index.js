@@ -5,17 +5,9 @@ var cors = require('cors');
 
 app.use(cors()); //allows overriding cross origin policy (use npm install if needed)
 
-var Yelp = require('yelp');
-var yelp = new Yelp({
-  consumer_key: 'dl6yJ0IjtSbF2i4VcQAyJg',
-  consumer_secret: 'LyKDEwmpIzq7aCbqChMtvDsh3TE',
-  token: 'PwtCgTe9HjOvXnmtnso-pRr8impN_Qxu',
-  token_secret: 'tXy1U-oNYvwUcfS--JyLNfo_Rg8',
-});
-var Chance = require('chance');
 
 
-app.get('/yelp', function(req, res){ // listens for request on /food route
+app.get('/sendSMS', function(req, res){ // listens for request on /food route
   var term = req.query.term; // grabs lat and lng queries from the request object
   var location = req.query.location;
   var radius = req.query.radius_filter;
