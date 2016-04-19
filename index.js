@@ -2,33 +2,49 @@ var express = require('express');
 var request = require('request');
 var app = express();
 var cors = require('cors');
+var bodyParser = require('body-parser');
 
 app.use(cors()); //allows overriding cross origin policy (use npm install if needed)
+app.use(bodyParser.json());       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+ extended: true
+}));
+
+var cfg = {};
+cfg.accountSid = process.env.TWILIO_ACCOUNT_SID;
+cfg.authToken = process.env.TWILIO_AUTH_TOKEN;
+cfg.sendingNumber = process.env.TWILIO_NUMBER;
 
 
+var client = require('twilio')(cfg.accountSid, cfg.authToken);
+app.post('/sendSMS', function(req, res){
 
-app.get('/sendSMS', function(req, res){ // listens for request on /food route
-  client.messages.create({
-    body: message,
-    to: to,
-    from: config.sendingNumber
-    // mediaUrl: 'http://www.yourserver.com/someimage.png'
-  }, function(err, data) {
-    if (err) {
-      console.error('Could not notify administrator');
-      console.error(err);
-    } else {
-      console.log('Administrator notified');
-    }
-  });
-
-});
+  var user = req.body.data.user;
+  var name = req.body.data.name;
+  var location = req.body.data.location;
+  var details = req.body.data.details;
+  var time = req.body.data.time;
+  var validNumbers = req.body.data.validNumbers;
+  var message = "Hey guys, " + user + " here. I'm organizing a game at " + time + ". The game is at " + name + ". Address is: " + location + ". " + details + ".";
+  console.log('message', message);
+  console.log('validNumbers', validNumbers);
 
 
+  // var to = '914-356-9250'; //req.body.to;
 
-app.get('/test', function(req, res){ // listens for request on /api route
- console.log('working!');
- res.send('working!'); // if no errors, send the body of data back to front end
+  for (var i=0; i<validNumbers.length; i++){
+    client.messages.create({
+      body: message,
+      to: validNumbers[i],
+      from: cfg.sendingNumber
+    }, function(err, data) {
+      if (err) {
+        console.error(err);
+      }
+    });
+  }
+
+
 });
 
 var port = process.env.PORT || 3000;
